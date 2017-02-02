@@ -1,2 +1,4 @@
-# ml-buff
-A machine learning builder framework
+# ML-BuFF
+A machine learning builder friendly framework
+
+WIP
