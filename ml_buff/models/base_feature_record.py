@@ -9,6 +9,10 @@ class FeatureMeta(type):
 class BaseFeatureRecord(metaclass=FeatureMeta):
     def __init__(self):
       self.session = Session()
-
+      if (self.getModel() == None):
+          self.feature = feature.Feature(self._class)
+          self.session.add(self.feature)
+          self.session.commit()
+          
     def getModel(self):
-        return self.session.query(feature.Feature).filter(feature.Feature.name == self._class).one()
+        return self.session.query(feature.Feature).filter(feature.Feature.name == self._class).one_or_none()

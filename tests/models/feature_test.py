@@ -1,13 +1,8 @@
 from ml_buff.models import feature
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import Session
+from tests import database_helper
 
 def test_persistence():
-    engine = create_engine('sqlite:///:memory:')
-    feature.Base.metadata.create_all(engine)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    session = database_helper.Session()
 
     testfeature = feature.Feature('test')
     session.add(testfeature)
