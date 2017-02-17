@@ -12,4 +12,3 @@ class BaseFeatureRecord(metaclass=FeatureMeta):
 
     def getModel(self):
         return self.session.query(feature.Feature).filter(feature.Feature.name == self._class).one()
-  
