@@ -1,9 +1,6 @@
 from ml_buff.models import feature, feature_value
-from tests import database_helper
 
-def test_persistence():
-    session = database_helper.Session()
-
+def test_persistence(session):
     testfeature = feature.Feature('test')
     session.add(testfeature)
     session.commit()
