@@ -16,3 +16,7 @@ class BaseFeatureRecord(metaclass=FeatureMeta):
           
     def getModel(self):
         return self.session.query(feature.Feature).filter(feature.Feature.name == self._class).one_or_none()
+
+    def getLastValue(self):
+        model = self.getModel()
+        return model.feature_values.last

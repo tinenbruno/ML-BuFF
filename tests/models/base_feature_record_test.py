@@ -16,3 +16,18 @@ def test_getModel(session):
     test_feature = TestFeature(session)
     result = test_feature.getModel()
     assert result.name == 'TestFeature'
+
+def test_getLastValue(session):
+    test_feature = TestFeature(session)
+    feature = test_feature.getModel()
+
+    feature_value_first = feature_value.FeatureValue([10], feature)
+    session.add(feature_value_first)
+    session.commit()
+
+    feature = test_feature.getModel()
+    assert feature.feature_values == None
+
+    feature_value_second = feature_value.FeatureValue([10], feature)
+
+    result = test_feature.getLastValue()
