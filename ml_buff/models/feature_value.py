@@ -1,10 +1,10 @@
 import sqlalchemy
 from datetime import datetime
-from ml_buff.database import Base 
+from ml_buff.database import DeclarativeBase 
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import relationship
 
-class FeatureValue(Base):
+class FeatureValue(DeclarativeBase):
   __tablename__ = 'feature_values'
 
   id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
