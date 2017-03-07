@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.engine.url import URL
+from sqlalchemy_utils import database_exists, create_database, drop_database
 from contextlib import contextmanager
 
 import settings
@@ -16,6 +17,10 @@ def db_create(engine):
 	if not database_exists(engine.url):
         create_database(engine.url)
     database.Base.metadata.create_all(engine)
+
+def db_drop(engine):
+	if database_exists(engine.url):
+		drop_database(engine.url)
 
 def session_connect(db_connect)
 	return sessionmaker(bind=db_connect)
