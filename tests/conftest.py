@@ -2,8 +2,9 @@ import pytest
 
 from ml_buff import database, settings
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session", autouse=True)
 def db(request):
-	engine = db_connect(**settings.DATABASE)
-	db_create(engine)
-    return engine
+	engine = database.db_connect(settings.DATABASE)
+	database.db_drop(engine)
+	database.db_create(engine)
+	return engine

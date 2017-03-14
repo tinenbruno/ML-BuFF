@@ -1,4 +1,5 @@
-from ml_buff.models import base_feature_record, feature
+from ml_buff.models import base_feature_record, feature, feature_value
+from ml_buff.database import session_scope
 
 class TestFeature(base_feature_record.BaseFeatureRecord): pass
 
@@ -11,17 +12,23 @@ def test_getModel():
     result = test_feature.getModel()
     assert result.name == 'TestFeature'
 
-def test_getLastValue():
+def test_getValue():
     test_feature = TestFeature()
     feature = test_feature.getModel()
 
-    feature_value_first = feature_value.FeatureValue([10], feature)
+    assert len(feature.feature_values) == 0
+
+    feature_value_first = feature_value.FeatureValue([9], feature)
     with session_scope() as session:
         session.add(feature_value_first)
 
     feature = test_feature.getModel()
-    assert feature.feature_values == None
+    assert feature.feature_values != None
 
     feature_value_second = feature_value.FeatureValue([10], feature)
+    
+    with session_scope() as session:
+        session.add(feature_value_second)
 
-    result = test_feature.getLastValue()
+    result = test_feature.getValue()
+    assert result.value == [10.0]
