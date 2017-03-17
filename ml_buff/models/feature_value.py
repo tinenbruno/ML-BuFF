@@ -11,7 +11,7 @@ class FeatureValue(DeclarativeBase):
   value = sqlalchemy.Column(ARRAY(sqlalchemy.Float))
   feature_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('features.id'))
   feature = relationship("Feature")
-  input_data_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('inputs.id'))
+  input_data_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('input_data.id'))
   input_data = relationship("InputData")
   created_at = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.now)
   updated_at = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.now, onupdate=datetime.now)
