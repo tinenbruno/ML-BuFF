@@ -1,5 +1,5 @@
-from . import feature
-from ml_buff.database import Session
+from ml_buff.models.base_feature_repository import BaseFeatureRepository
+from ml_buff.database import session_scope
 
 class FeatureMeta(type):
     def __init__(cls, name, bases, dct):
@@ -8,11 +8,14 @@ class FeatureMeta(type):
 
 class BaseFeatureRecord(metaclass=FeatureMeta):
     def __init__(self):
-      self.session = Session()
       if (self.getModel() == None):
-          self.feature = feature.Feature(self._class)
-          self.session.add(self.feature)
-          self.session.commit()
-          
+          with session_scope() as session:
+            BaseFeatureRepository().create(session, self._class)
+
     def getModel(self):
-        return self.session.query(feature.Feature).filter(feature.Feature.name == self._class).one_or_none()
+        with session_scope() as session:
+            return BaseFeatureRepository().get(session, self._class)
+
+    def getValue(self):
+        with session_scope() as session:
+            return BaseFeatureRepository().getValue(session, self._class)
