@@ -16,6 +16,27 @@ class BaseFeatureRecord(metaclass=FeatureMeta):
         with session_scope() as session:
             return BaseFeatureRepository().get(session, self._class)
 
-    def getValue(self):
+    def getOrCreateModel(self):
+        model = self.getModel()
+        if model is None:
+            with session_scope() as session:
+                model = create(self, session, self._class)
+        return model
+
+    def calculate(self, input_data):
+        return 0
+
+    def getValue(self, input_data):
         with session_scope() as session:
-            return BaseFeatureRepository().getValue(session, self._class)
+            return BaseFeatureRepository().getValue(session, self._class, input_data)
+
+    def getOrCreateValue(self, input_data):
+        featureValue = self.getValue(input_data)
+        if featureValue is None:
+            with session_scope() as session:
+                value = self.calculate(input_data)
+                featureValue = (
+                    BaseFeatureRepository()
+                    .createValue(session, self._class, input_data, value)
+                )
+        return featureValue

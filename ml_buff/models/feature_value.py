@@ -17,6 +17,7 @@ class FeatureValue(DeclarativeBase):
   updated_at = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.now, onupdate=datetime.now)
 
 
-  def __init__(self, value, feature):
+  def __init__(self, value, feature, input_data):
     self.value = value
     self.feature = feature
+    self.input_data = input_data
