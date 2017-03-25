@@ -1,7 +1,6 @@
 from ml_buff.models.feature import Feature
 from ml_buff.models.feature_value import FeatureValue
-from sqlalchemy.orm import joinedload 
-
+from sqlalchemy.orm import joinedload
 class BaseFeatureRepository():
     def create(self, session, classname):
         feature = Feature(classname)
@@ -21,11 +20,10 @@ class BaseFeatureRepository():
     def getValue(self, session, classname, input_data):
         model = (
             session.query(FeatureValue)
+            .join(Feature)
             .options(joinedload("feature"))
-            .filter(
-                Feature.name == classname, 
-                FeatureValue.input_data_id == input_data.id
-            )
+            .filter(Feature.name == classname)
+            .filter(FeatureValue.input_data_id == input_data.id)
             .order_by(FeatureValue.id.desc())
             .first()
         )
@@ -34,8 +32,7 @@ class BaseFeatureRepository():
         return model
 
     def createValue(self, session, classname, input_data, value):
-        feature = get(self, session, classname)
+        feature = self.get(session, classname)
         feature_value = FeatureValue(value, feature, input_data)
         session.add(feature_value)
-        session.expunge(feature_value)
         return feature_value

@@ -24,7 +24,7 @@ class BaseFeatureRecord(metaclass=FeatureMeta):
         return model
 
     def calculate(self, input_data):
-        return 0
+        return [0]
 
     def getValue(self, input_data):
         with session_scope() as session:
@@ -35,8 +35,4 @@ class BaseFeatureRecord(metaclass=FeatureMeta):
         if featureValue is None:
             with session_scope() as session:
                 value = self.calculate(input_data)
-                featureValue = (
-                    BaseFeatureRepository()
-                    .createValue(session, self._class, input_data, value)
-                )
-        return featureValue
+                BaseFeatureRepository().createValue(session, self._class, input_data, value)
