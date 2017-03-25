@@ -8,9 +8,9 @@ class FeatureMeta(type):
 
 class BaseFeatureRecord(metaclass=FeatureMeta):
     def __init__(self):
-      if (self.getModel() == None):
-          with session_scope() as session:
-            BaseFeatureRepository().create(session, self._class)
+        if (self.getModel() == None):
+            with session_scope() as session:
+                BaseFeatureRepository().create(session, self._class)
 
     def getModel(self):
         with session_scope() as session:

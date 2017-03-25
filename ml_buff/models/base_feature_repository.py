@@ -6,8 +6,6 @@ class BaseFeatureRepository():
     def create(self, session, classname):
         feature = Feature(classname)
         session.add(feature)
-        session.expunge(feature)
-        return feature
 
     def get(self, session, classname):
         return_value = (
