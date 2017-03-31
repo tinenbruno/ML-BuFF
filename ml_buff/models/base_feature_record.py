@@ -7,6 +7,8 @@ class FeatureMeta(type):
         cls._class = cls.__name__
 
 class BaseFeatureRecord(metaclass=FeatureMeta):
+    _input_data_values = None
+
     def __init__(self):
         if (self.getModel() == None):
             with session_scope() as session:
@@ -23,6 +25,9 @@ class BaseFeatureRecord(metaclass=FeatureMeta):
                 model = create(self, session, self._class)
         return model
 
+    def setInputDataValues(self, input_data_values):
+        self._input_data_values = input_data_values
+
     def calculate(self, input_data):
         return [0]
 
@@ -36,3 +41,9 @@ class BaseFeatureRecord(metaclass=FeatureMeta):
             with session_scope() as session:
                 value = self.calculate(input_data)
                 BaseFeatureRepository().createValue(session, self._class, input_data, value)
+
+    def createValue(self, input_data):
+        with session_scope() as session:
+            value = self.calculate(input_data)
+            BaseFeatureRepository().createValue(session, self._class, input_data, value)
+

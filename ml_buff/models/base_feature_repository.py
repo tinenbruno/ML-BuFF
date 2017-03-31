@@ -9,6 +9,7 @@ class BaseFeatureRepository():
     def get(self, session, classname):
         return_value = (
             session.query(Feature)
+            .outerjoin(FeatureValue)
             .options(joinedload("feature_values"))
             .filter(Feature.name == classname)
             .one_or_none()

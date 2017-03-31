@@ -1,6 +1,6 @@
 import sqlalchemy
 from datetime import datetime
-from ml_buff.database import DeclarativeBase 
+from ml_buff.database import DeclarativeBase
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import relationship
 

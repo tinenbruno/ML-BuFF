@@ -17,8 +17,6 @@ def test_getValue():
     feature = test_feature.getModel()
     input_data_test = input_data.InputData(1234, 'datasetTest')
 
-    assert len(feature.feature_values) == 0
-
     feature_value_first = feature_value.FeatureValue([9], feature, input_data_test)
     with session_scope() as session:
         session.add(feature_value_first)
@@ -27,12 +25,12 @@ def test_getValue():
     assert feature.feature_values != None
 
     feature_value_second = feature_value.FeatureValue([10], feature, input_data_test)
-    
+
     with session_scope() as session:
         session.add(feature_value_second)
-    
+
     with session_scope() as session:
-        input_data_test = session.query(input_data.InputData).first()
+        input_data_test = session.query(input_data.InputData).order_by(-input_data.InputData.id).first()
         session.expunge(input_data_test)
 
     result = test_feature.getValue(input_data_test)
