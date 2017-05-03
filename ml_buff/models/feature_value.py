@@ -1,8 +1,9 @@
 import sqlalchemy
 from datetime import datetime
-from ml_buff.database import DeclarativeBase 
+from ml_buff.database import DeclarativeBase
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import relationship
+from ml_buff.models.feature import Feature
 
 class FeatureValue(DeclarativeBase):
   __tablename__ = 'feature_values'
@@ -17,6 +18,7 @@ class FeatureValue(DeclarativeBase):
   updated_at = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.now, onupdate=datetime.now)
 
 
-  def __init__(self, value, feature):
+  def __init__(self, value, feature, input_data):
     self.value = value
     self.feature = feature
+    self.input_data = input_data
