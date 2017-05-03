@@ -3,6 +3,7 @@ from datetime import datetime
 from ml_buff.database import DeclarativeBase
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import relationship
+from ml_buff.models.feature import Feature
 
 class FeatureValue(DeclarativeBase):
   __tablename__ = 'feature_values'

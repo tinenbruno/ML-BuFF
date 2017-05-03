@@ -17,7 +17,7 @@ class FeatureValueHelper():
                 input_instance = BaseInputDataRepository().get(session, input_data_id)
             feature = subclass()
             feature.setInputDataValues(values)
-            feature.getOrCreateValue(input_instance)           
+            feature.getOrCreateValue(input_instance)
             with session_scope() as session:
                 input_instance = BaseInputDataRepository().get(session, input_data_id)
 
@@ -31,3 +31,14 @@ class FeatureValueHelper():
                 feature = subclass()
                 feature.setInputDataValues(values)
                 feature.createValue(input_data)
+
+    @classmethod
+    def getAll(self, input_data_ids):
+        subclasses = BaseFeatureRecord.__subclasses__()
+        return_value = {}
+        with session_scope() as session:
+            for subclass in subclasses:
+                feature = subclass()
+                return_value[feature._class] = feature.getInputDataValues(input_data_ids)
+
+        return return_value

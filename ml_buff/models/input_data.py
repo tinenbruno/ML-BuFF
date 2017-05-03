@@ -2,6 +2,7 @@ import sqlalchemy
 from datetime import datetime
 from ml_buff.database import DeclarativeBase
 from sqlalchemy.orm import relationship
+from ml_buff.models.feature_value import FeatureValue
 
 class InputData(DeclarativeBase):
     __tablename__ = 'input_data'
