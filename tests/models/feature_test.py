@@ -1,15 +1,8 @@
-from ml_buff.models import feature
-from ml_buff.database import session_scope
+from ml_buff.models.feature import Feature
 
 def test_persistence():
-    testfeature = feature.Feature('test')
-
-    with session_scope() as session:
-        session.add(testfeature)
-        
-    with session_scope() as session:
-        testfeature = session.query(feature.Feature).order_by(feature.Feature.id.desc()).first()
-        session.expunge(testfeature)
+    testfeature = Feature.create(
+            name='test')
 
     assert testfeature.name == 'test'
     assert testfeature.id != None

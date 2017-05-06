@@ -1,24 +1,12 @@
-import sqlalchemy
 from datetime import datetime
-from ml_buff.database import DeclarativeBase
-from sqlalchemy.dialects.postgresql import ARRAY
-from sqlalchemy.orm import relationship
+from ml_buff.models.base_model import BaseModel
 from ml_buff.models.feature import Feature
+from ml_buff.models.input_data import InputData
+from playhouse.postgres_ext import *
 
-class FeatureValue(DeclarativeBase):
-  __tablename__ = 'feature_values'
-
-  id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
-  value = sqlalchemy.Column(ARRAY(sqlalchemy.Float))
-  feature_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('features.id'))
-  feature = relationship("Feature")
-  input_data_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('input_data.id'))
-  input_data = relationship("InputData")
-  created_at = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.now)
-  updated_at = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.now, onupdate=datetime.now)
-
-
-  def __init__(self, value, feature, input_data):
-    self.value = value
-    self.feature = feature
-    self.input_data = input_data
+class FeatureValue(BaseModel):
+  value = ArrayField(DoubleField)
+  feature = ForeignKeyField(Feature)
+  input_data = ForeignKeyField(InputData)
+  created_at = DateTimeField(default = datetime.now)
+  updated_at = DateTimeField(default = datetime.now)
