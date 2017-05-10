@@ -1,39 +1,31 @@
 from ml_buff.models.feature import Feature
 from ml_buff.models.feature_value import FeatureValue
-from sqlalchemy.orm import joinedload
+
 class BaseFeatureRepository():
-    def create(self, session, classname):
-        feature = Feature(classname)
-        session.add(feature)
+    def create(self, classname):
+        feature = Feature.create( name = classname )
 
-    def get(self, session, classname):
-        return_value = (
-            session.query(Feature)
-            .outerjoin(FeatureValue)
-            .options(joinedload("feature_values"))
-            .filter(Feature.name == classname)
-            .one_or_none()
-        )
-        if return_value is not None:
-            session.expunge(return_value)
-        return return_value
+    def get_or_create(self, classname):
+        return Feature.get_or_create( name = classname )
 
-    def getValue(self, session, classname, input_data):
-        model = (
-            session.query(FeatureValue)
+    def get(self, classname):
+        return Feature.get( Feature.name == classname )
+
+    def getValue(self, classname, input_data):
+        model = (FeatureValue
+            .select()
             .join(Feature)
-            .options(joinedload("feature"))
-            .filter(Feature.name == classname)
-            .filter(FeatureValue.input_data_id == input_data.id)
+            .where(Feature.name == classname)
             .order_by(FeatureValue.id.desc())
-            .first()
-        )
-        if model is not None:
-            session.expunge(model)
+            .get())
+
         return model
 
-    def createValue(self, session, classname, input_data, value):
-        feature = self.get(session, classname)
-        feature_value = FeatureValue(value, feature, input_data)
-        session.add(feature_value)
+    def createValue(self, classname, input_data, value):
+        feature = self.get(classname)
+        feature_value = FeatureValue.create(
+                value = value,
+                feature = feature,
+                input_data = input_data)
+
         return feature_value
