@@ -15,9 +15,7 @@ class BaseFeatureRecord(metaclass=FeatureMeta):
         return BaseFeatureRepository().get(self._class)
 
     def getOrCreateModel(self):
-        model = self.getModel()
-        if model is None:
-            model = create(self, session, self._class)
+        model = BaseFeatureRepository().get_or_create(self._class)
         return model
 
     def setInputDataValues(self, input_data_values):
@@ -30,8 +28,9 @@ class BaseFeatureRecord(metaclass=FeatureMeta):
         return BaseFeatureRepository().getValue(self._class, input_data)
 
     def getOrCreateValue(self, input_data):
-        featureValue = self.getValue(input_data)
-        if featureValue is None:
+        try:
+            featureValue = self.getValue(input_data)
+        except:
             value = self.calculate(input_data)
             BaseFeatureRepository().createValue(self._class, input_data, value)
 
