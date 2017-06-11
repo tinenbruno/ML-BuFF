@@ -29,7 +29,7 @@ class BaseFeatureRecord(metaclass=FeatureMeta):
 
     def getOrCreateValue(self, input_data):
         try:
-            featureValue = self.getValue(input_data)
+            featureValue = self.getValued(input_data.id)
         except:
             value = self.calculate(input_data)
             BaseFeatureRepository().createValue(self._class, input_data, value)

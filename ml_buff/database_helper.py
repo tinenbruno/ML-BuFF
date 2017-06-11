@@ -7,10 +7,13 @@ from ml_buff.models.feature_value import FeatureValue
 from ml_buff.models.base_model import database
 
 def create_tables():
-    database.connect()
+    try:
+        database.connect()
+    except:
+        pass
     database.create_table(InputData, safe=True)
     database.create_table(Feature, safe=True)
-    database.create_tables([Feature, FeatureValue], safe=True)
+    database.create_table(FeatureValue, safe=True)
 
 def get_tables():
     database.get_tables()

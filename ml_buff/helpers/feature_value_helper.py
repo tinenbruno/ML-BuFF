@@ -4,8 +4,8 @@ from ml_buff.models.base_input_data_repository import BaseInputDataRepository
 class FeatureValueHelper():
     @classmethod
     def createAll(self, input_data_list):
-        for input_data_id, values in input_data_list.items():
-            self.createAllForInput(input_data_id, values)
+        for input_data in input_data_list:
+            self.createAllForInput(input_data['input_id'],input_data['values'])
 
     @classmethod
     def createAllForInput(self, input_data_id, values):
@@ -16,7 +16,6 @@ class FeatureValueHelper():
             feature = subclass()
             feature.setInputDataValues(values)
             feature.getOrCreateValue(input_instance)
-            input_instance = BaseInputDataRepository().get(input_data_id)
 
 
     @classmethod
